@@ -264,7 +264,7 @@ footer { text-align: center; padding: 3rem 1.5rem; font-family: var(--serif); fo
 <!-- CUENTA REGRESIVA -->
 <section id="countdown" class="full-width">
   <div style="max-width:680px;margin:0 auto;text-align:center">
-    <span class="section-label" style="display:block;margin-bottom:2rem" id="t-cd-label">· faltan ·</span>
+    <span class="section-label" style="display:block;margin-bottom:4rem" id="t-cd-label">· faltan ·</span>
     <div class="cd-grid" id="cd-grid">
       <div class="cd-unit"><span class="cd-number" id="cd-days">---</span><span class="cd-label">días</span></div>
       <div class="cd-unit"><span class="cd-number" id="cd-hours">--</span><span class="cd-label">horas</span></div>
@@ -371,7 +371,7 @@ footer { text-align: center; padding: 3rem 1.5rem; font-family: var(--serif); fo
 //  8 · Terracota        — veraniego, festivo
 // ════════════════════════════════════════
 
-const PALETA_ELEGIDA = 7;
+const PALETA_ELEGIDA = 6;
 
 // (No toques esto)
 const PALETAS = {
@@ -477,10 +477,10 @@ const TEXTOS = {
     // Cada tarjeta: { etiqueta, valor, sub }
     // Podés agregar o quitar tarjetas de este array
     cards: [
-      { etiqueta: 'Ceremonia',  valor: 'Iglesia San Francisco',  sub: '18:00 hs · Av. Principal 1234, Montevideo' },
-      { etiqueta: 'Recepción',  valor: 'Salón La Estancia',      sub: '20:30 hs · Ruta 8 km 25, Canelones' },
-      { etiqueta: 'Fecha',      valor: 'Sábado<br>14 · 03 · 2026', sub: '' },
-      { etiqueta: 'Dress code', valor: 'Elegante',               sub: 'Paleta sugerida: tonos tierra y crema' },
+      { etiqueta: 'CEREMONIA',  valor: 'Iglesia San Francisco',  sub: '18:00 hs · Av. Principal 1234, Montevideo' },
+      { etiqueta: 'FIESTA',  valor: 'Salón La Estancia',      sub: '20:30 hs · Ruta 9 km 25, Canelones' },
+      { etiqueta: 'FECHA',      valor: 'Sábado<br>14 · 03 · 2026', sub: '' },
+      { etiqueta: 'DRESS CODE', valor: 'Formal' },
     ],
   },
 
@@ -488,7 +488,7 @@ const TEXTOS = {
   mapa: {
     etiqueta:  '· cómo llegar ·',
     titulo:    '<em>Ubicación</em>',
-    direccion: 'Salón La Estancia · Ruta 8 km 25, Canelones, Uruguay',
+    direccion: 'Salón La Estancia · Ruta 9 km 25, Canelones, Uruguay',
     // Embed de Google Maps:
     // 1. Buscá el lugar en Google Maps
     // 2. Clic "Compartir" → "Insertar mapa"
