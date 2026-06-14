@@ -1,1 +1,354 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación Digital</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link id="font-link" href="" rel="stylesheet">
+
+<style>
+/* ── VARIABLES DINÁMICAS (Se llenan con JS) ── */
+:root {
+  --bg-1: #ffffff;
+  --bg-2: #f9f9f9;
+  --accent: #C9A98C;
+  --title-color: #2E2822;
+  --text-color: #8C7B6E;
+  --title-font: 'Cormorant Garamond', serif;
+  --body-font: 'Jost', sans-serif;
+  --title-size: 3.5rem;
+  --text-size: 1.1rem;
+  --section-spacing: 8rem;
+}
+
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { 
+    background-color: var(--bg-1); 
+    color: var(--text-color); 
+    font-family: var(--body-font); 
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* ── PORTADA (Elegancia Maximalista) ── */
+#cover {
+  position: relative; height: 100vh; display: flex; 
+  align-items: center; justify-content: center; overflow: hidden;
+  text-align: center; color: white;
+}
+#cover-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  transform: scale(1.1); transition: transform 2s ease-out;
+}
+#cover-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.1), rgba(0,0,0,0.4));
+}
+#cover-content { position: relative; z-index: 2; padding: 20px; }
+#cover h1 { 
+    font-family: var(--title-font); font-size: clamp(3rem, 12vw, 6rem); 
+    font-weight: 300; line-height: 1; margin-bottom: 1rem;
+}
+.eyebrow { 
+    text-transform: uppercase; letter-spacing: 5px; font-size: 0.8rem; 
+    margin-bottom: 2rem; display: block; 
+}
+
+/* ── SECCIONES ── */
+.section-wrapper {
+    padding: var(--section-spacing) 1.5rem;
+    display: flex; flex-direction: column; align-items: center;
+    transition: background-color 0.5s ease;
+}
+.section-wrapper:nth-child(odd) { background-color: var(--bg-1); }
+.section-wrapper:nth-child(even) { background-color: var(--bg-2); }
+
+.container { max-width: 800px; width: 100%; text-align: center; }
+
+h2 {
+    font-family: var(--title-font);
+    font-size: var(--title-size);
+    color: var(--title-color);
+    font-weight: 300; margin-bottom: 1.5rem;
+    line-height: 1.1;
+}
+h2 em { font-style: italic; }
+p { font-size: var(--text-size); margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+/* ── CUENTA REGRESIVA ── */
+.countdown-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1rem; margin-top: 3rem;
+}
+.cd-item { padding: 1rem; border-bottom: 1px solid var(--accent); }
+.cd-num { 
+    display: block; font-family: var(--title-font); 
+    font-size: 3rem; color: var(--accent); 
+}
+.cd-lab { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; }
+
+/* ── GALERÍA ANIMADA ── */
+.gallery-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    gap: 15px; margin-top: 3rem;
+}
+.gallery-item {
+    overflow: hidden; border-radius: 4px;
+    opacity: 0; transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+.gallery-item.visible { opacity: 1; transform: translateY(0); }
+.gallery-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    filter: grayscale(20%);
+}
+.gallery-item:hover img { transform: scale(1.1); filter: grayscale(0); }
+
+/* Distribución tipo mosaico */
+.g-1 { grid-column: span 3; aspect-ratio: 1/1; }
+.g-2 { grid-column: span 3; aspect-ratio: 1/1; }
+.g-3 { grid-column: span 2; aspect-ratio: 1/1.2; }
+.g-4 { grid-column: span 2; aspect-ratio: 1/1.2; }
+.g-5 { grid-column: span 2; aspect-ratio: 1/1.2; }
+
+/* ── BOTONES ── */
+.btn {
+    display: inline-block; padding: 1.2rem 2.5rem;
+    border: 1px solid var(--accent);
+    color: var(--accent); text-decoration: none;
+    text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem;
+    transition: all 0.3s; margin-top: 1rem;
+    background: transparent; cursor: pointer;
+}
+.btn:hover { background: var(--accent); color: white; }
+
+/* ── RSVP ── */
+.wa-btn {
+    background: #25D366; color: white; border: none;
+    padding: 1.2rem 3rem; border-radius: 50px; font-weight: 500;
+}
+
+/* ── MUSIC FLOAT ── */
+#music-control {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 100;
+    width: 50px; height: 50px; border-radius: 50%;
+    background: white; border: 1px solid var(--accent);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+    :root { --section-spacing: 5rem; --title-size: 2.5rem; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .g-1, .g-2, .g-3, .g-4, .g-5 { grid-column: span 1; aspect-ratio: 1/1; }
+    .countdown-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div id="cover">
+    <div id="cover-bg"></div>
+    <div id="cover-overlay"></div>
+    <div id="cover-content">
+        <span class="eyebrow" id="t-eyebrow">Cargando...</span>
+        <h1 id="t-names">Sofía & Martín</h1>
+        <p id="t-cover-date"></p>
+    </div>
+</div>
+
+<div id="main-content">
+    <!-- Las secciones se generan dinámicamente aquí -->
+</div>
+
+<button id="music-control">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+</button>
+<audio id="bg-audio" loop></audio>
+
+<script>
+/* ════════════════════════════════════════
+   ★ CONFIGURACIÓN PRINCIPAL
+═════════════════════════════════════════= */
+
+const CONFIG = {
+    // 1. PALETAS DE COLORES
+    // bg1: Fondo impar, bg2: Fondo par, accent: Detalles, title: Títulos, text: Párrafos
+    paleta: 1, 
+    paletas: {
+        1: { bg1:'#FFFFFF', bg2:'#F8F5F2', accent:'#B49372', title:'#2D2D2D', text:'#666666' }, // Arena & Champagne
+        2: { bg1:'#F4F7F5', bg2:'#E9EFEC', accent:'#5B7566', title:'#1F2E26', text:'#506359' }, // Eucalyptus
+        3: { bg1:'#FFFFFF', bg2:'#F5F5F5', accent:'#333333', title:'#000000', text:'#555555' }, // Minimalist Black
+        4: { bg1:'#FCF8F8', bg2:'#F7EDED', accent:'#D4A5A5', title:'#4A3B3B', text:'#7D6B6B' }, // Dusty Rose
+        5: { bg1:'#1A1A1A', bg2:'#242424', accent:'#C9A98C', title:'#FFFFFF', text:'#BBBBBB' }, // Dark Luxury
+    },
+
+    // 2. ESTILOS DE TEXTO
+    estilos: {
+        tituloSize: "3.4rem",    // Tamaño de títulos
+        textoSize: "1.05rem",    // Tamaño de párrafos
+        fuentePrincipal: "A",    // A: Serif Elegante, B: Moderna Sans, C: Clásica
+    },
+
+    // 3. DATOS DEL EVENTO
+    evento: {
+        nombres: "Sofía & Martín",
+        frasePortada: "¡NOS CASAMOS!",
+        fecha: "Sábado 20 de Octubre de 2026",
+        fechaCuentaRegresiva: new Date(2026, 9, 20, 21, 0), // (Año, Mes-1, Día, Hora, Min)
+        musica: "musica.mp3",
+        whatsapp: "59899000000"
+    }
+};
+
+/* ════════════════════════════════════════
+   MOTOR VISUAL (No editar salvo conocimiento)
+═════════════════════════════════════════= */
+
+// Aplicar Colores
+const p = CONFIG.paletas[CONFIG.paleta];
+const root = document.documentElement.style;
+root.setProperty('--bg-1', p.bg1);
+root.setProperty('--bg-2', p.bg2);
+root.setProperty('--accent', p.accent);
+root.setProperty('--title-color', p.title);
+root.setProperty('--text-color', p.text);
+root.setProperty('--title-size', CONFIG.estilos.tituloSize);
+root.setProperty('--text-size', CONFIG.estilos.textoSize);
+
+// Aplicar Fuentes
+const fuentes = {
+    A: { serif:'Cormorant Garamond', sans:'Jost', gf:'Cormorant+Garamond:wght@300;400&family=Jost:wght@300;400' },
+    B: { serif:'Playfair Display', sans:'Lato', gf:'Playfair+Display:ital,wght@0,400;1,400&family=Lato:wght@300;400' },
+    C: { serif:'Libre Baskerville', sans:'Montserrat', gf:'Libre+Baskerville:wght@400;700&family=Montserrat:wght@300;400' }
+};
+const f = fuentes[CONFIG.estilos.fuentePrincipal];
+document.getElementById('font-link').href = `https://fonts.googleapis.com/css2?family=${f.gf}&display=swap`;
+root.setProperty('--title-font', `'${f.serif}', serif`);
+root.setProperty('--body-font', `'${f.sans}', sans-serif`);
+
+// Renderizar Contenido
+document.getElementById('t-eyebrow').textContent = CONFIG.evento.frasePortada;
+document.getElementById('t-names').textContent = CONFIG.evento.nombres;
+document.getElementById('t-cover-date').textContent = CONFIG.evento.fecha;
+document.getElementById('cover-bg').style.backgroundImage = "url('cover.jpg')";
+
+const main = document.getElementById('main-content');
+
+const secciones = [
+    {
+        id: 'historia',
+        titulo: 'Nuestra <em>Historia</em>',
+        contenido: '<p>Hay momentos que cambian la vida para siempre. El nuestro comenzó hace 5 años y hoy decidimos celebrarlo con ustedes.</p>'
+    },
+    {
+        id: 'cuenta-regresiva',
+        titulo: 'Faltan...',
+        contenido: `
+            <div class="countdown-grid">
+                <div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div>
+                <div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Horas</span></div>
+                <div class="cd-item"><span class="cd-num" id="mins">00</span><span class="cd-lab">Min</span></div>
+                <div class="cd-item"><span class="cd-num" id="secs">00</span><span class="cd-lab">Seg</span></div>
+            </div>`
+    },
+    {
+        id: 'detalles',
+        titulo: 'Dónde <em>&</em> Cuándo',
+        contenido: `
+            <p><strong>Ceremonia:</strong> Iglesia Matriz a las 18:00hs.</p>
+            <p><strong>Fiesta:</strong> Chacra del Sol a las 21:00hs.</p>
+            <a href="#" class="btn">Ver Mapa</a>`
+    },
+    {
+        id: 'galeria',
+        titulo: 'Momentos',
+        contenido: `
+            <div class="gallery-grid">
+                <div class="gallery-item g-1"><img src="foto1.jpg" alt="Foto"></div>
+                <div class="gallery-item g-2"><img src="foto2.jpg" alt="Foto"></div>
+                <div class="gallery-item g-3"><img src="foto3.jpg" alt="Foto"></div>
+                <div class="gallery-item g-4"><img src="foto4.jpg" alt="Foto"></div>
+                <div class="gallery-item g-5"><img src="foto5.jpg" alt="Foto"></div>
+            </div>`
+    },
+    {
+        id: 'rsvp',
+        titulo: 'Confirmación',
+        contenido: `
+            <p>Tu presencia es lo más importante para nosotros. Por favor, confirmá antes del 1 de octubre.</p>
+            <a href="https://wa.me/${CONFIG.evento.whatsapp}" class="btn wa-btn">Confirmar por WhatsApp</a>`
+    }
+];
+
+secciones.forEach(sec => {
+    const wrap = document.createElement('section');
+    wrap.className = 'section-wrapper';
+    wrap.innerHTML = `
+        <div class="container">
+            <h2>${sec.titulo}</h2>
+            ${sec.contenido}
+        </div>
+    `;
+    main.appendChild(wrap);
+});
+
+// Lógica de Cuenta Regresiva
+function updateCountdown() {
+    const now = new Date().getTime();
+    const gap = CONFIG.evento.fechaCuentaRegresiva - now;
+
+    if(gap < 0) return;
+
+    const second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24;
+
+    document.getElementById('days').innerText = Math.floor(gap / day);
+    document.getElementById('hours').innerText = Math.floor((gap % day) / hour);
+    document.getElementById('mins').innerText = Math.floor((gap % hour) / minute);
+    document.getElementById('secs').innerText = Math.floor((gap % minute) / second);
+}
+setInterval(updateCountdown, 1000);
+
+// Animación de Galería al Scroll
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.gallery-item').forEach(item => observer.observe(item));
+
+// Control de Música
+const audio = document.getElementById('bg-audio');
+const musicBtn = document.getElementById('music-control');
+audio.src = CONFIG.evento.musica;
+
+musicBtn.onclick = () => {
+    if (audio.paused) {
+        audio.play();
+        musicBtn.style.animation = "pulse 2s infinite";
+    } else {
+        audio.pause();
+        musicBtn.style.animation = "none";
+    }
+};
+
+// Efecto Parallax suave en portada
+window.addEventListener('scroll', () => {
+    const scroll = window.pageYOffset;
+    document.getElementById('cover-bg').style.transform = `scale(${1.1 + scroll/5000})`;
+});
+</script>
+
+</body>
+</html>
