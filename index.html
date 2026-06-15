@@ -1,604 +1,292 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invitación Digital Premium</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación Digital Premium</title>
 
-    <!-- FUENTES -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link id="font-link" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
 
-    <style>
-        /* ── VARIABLES DE DISEÑO ── */
-        :root {
-            --bg-1: #FFFFFF;
-            --bg-2: #F9F4F4;
-            --accent: #D4A5A5;
-            --title-color: #4A3B3B;
-            --text-color: #8A7575;
-            --title-font: 'Cormorant Garamond', serif;
-            --body-font: 'Jost', sans-serif;
-            --title-size: 2.2rem;
-            
-            /* Espaciados configurables */
-            --esp-t-t: 30px;
-            --esp-t-b: 40px;
-            
-            /* Posición de foto */
-            --pos-pc: 50%;
-            --pos-mo: 50%;
-        }
+<style>
+/* ── VARIABLES DE DISEÑO ── */
+:root {
+  --bg-1: #FFFFFF;
+  --bg-2: #EBDEDE;
+  --accent: #D4A5A5; 
+  --title-color: #4A3B3B;
+  --text-color: #8A7575;
+  --title-font: 'Cormorant Garamond', serif;
+  --body-font: 'Jost', sans-serif;
+  --title-size: 2.2rem;
+  
+  /* Estas variables se llenan automáticamente con el menú CONFIG */
+  --espacio-titulo-texto: 2rem;
+  --espacio-texto-boton: 1.5rem;
+  --pos-pc-vertical: 50%;
+  --pos-movil-vertical: 50%;
+}
 
-        /* ── ESTILOS GENERALES ── */
-        body {
-            background-color: var(--bg-1);
-            color: var(--text-color);
-            font-family: var(--body-font);
-            line-height: 1.6;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { 
+    background-color: var(--bg-1); color: var(--text-color); 
+    font-family: var(--body-font); line-height: 1.6; text-align: center;
+}
 
-        /* ── PORTADA ── */
-        #cover {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            color: white;
-        }
+/* ── PORTADA ── */
+#cover {
+  position: relative; height: 100vh; display: flex; 
+  align-items: center; justify-content: center; overflow: hidden; color: white;
+}
+#cover-bg { 
+    position: absolute; inset: 0; 
+    background-size: cover; 
+    background-repeat: no-repeat;
+    /* Posición por defecto para celular */
+    background-position: center var(--pos-movil-vertical); 
+}
 
-        #cover-bg {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center var(--pos-mo);
-        }
+/* Ajuste preciso para PC */
+@media (min-width: 768px) {
+    #cover-bg {
+        background-position: center var(--pos-pc-vertical) !important;
+    }
+}
 
-        @media (min-width: 768px) {
-            #cover-bg {
-                background-position: center var(--pos-pc) !important;
-            }
-        }
+#cover-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); }
+#cover-content { position: relative; z-index: 2; padding: 20px; }
+#cover h1 { font-family: var(--title-font); font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 300; letter-spacing: 2px; }
 
-        #cover-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.3);
-        }
+/* ── ICONOS FLOTANTES ── */
+.icon-container {
+    width: 45px; margin: 0 auto; color: var(--accent);
+    margin-bottom: var(--espacio-titulo-texto); /* Usa el espaciado configurable */
+    animation: floating 3s ease-in-out infinite;
+}
+@keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+    100% { transform: translateY(0px); }
+}
 
-        #cover-content {
-            position: relative;
-            z-index: 2;
-            padding: 20px;
-        }
+/* ── SECCIONES ── */
+section { padding: 6rem 1.5rem; opacity: 0; transform: translateY(20px); transition: 1s all ease; }
+section.visible { opacity: 1; transform: translateY(0); }
+section:nth-of-type(odd) { background-color: var(--bg-1) !important; }
+section:nth-of-type(even) { background-color: var(--bg-2) !important; }
 
-        #cover h1 {
-            font-family: var(--title-font);
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin: 0;
-        }
+h2 { 
+    font-family: var(--title-font); font-size: var(--title-size); 
+    font-weight: 300; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--title-color); 
+    margin-bottom: var(--espacio-titulo-texto); /* ESPACIADO TITULO -> TEXTO */
+}
 
-        /* ── ICONOS FLOTANTES ── */
-        .icon-container {
-            width: 45px;
-            margin: 0 auto;
-            color: var(--accent);
-            margin-bottom: var(--esp-t-t);
-            animation: floating 3s ease-in-out infinite;
-        }
+/* ── BOTONES ── */
+.btn {
+    display: inline-block; padding: 1rem 2.2rem; 
+    margin-top: var(--espacio-texto-boton); /* ESPACIADO TEXTO -> BOTON */
+    background: linear-gradient(145deg, #ffffff, var(--bg-2));
+    color: var(--title-color) !important; border: 1px solid var(--accent); 
+    border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
+    letter-spacing: 3px; text-decoration: none; cursor: pointer; transition: 0.4s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+.btn:hover { transform: translateY(-2px); background: #ffffff; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); }
 
-        @keyframes floating {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-        }
+/* ── OTROS ELEMENTOS ── */
+.scroll-arrow {
+    position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%);
+    width: 30px; height: 30px; color: white; z-index: 10; animation: bounce 2s infinite;
+}
+@keyframes bounce { 0%, 100% { transform: translate(-50%, 0); opacity: 0.3; } 50% { transform: translate(-50%, 15px); opacity: 1; } }
 
-        /* ── SECCIONES ── */
-        section {
-            padding: 6rem 1.5rem;
-        }
+.countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 400px; margin: 2rem auto; }
+.cd-item { background: white; padding: 15px 5px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+.cd-num { display: block; font-family: var(--title-font); font-size: 1.6rem; color: var(--accent); font-weight: bold; }
+.cd-lab { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        section:nth-of-type(odd) { background-color: var(--bg-1); }
-        section:nth-of-type(even) { background-color: var(--bg-2); }
+.gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 2rem; }
+.gallery-item { aspect-ratio: 1/1; overflow: hidden; border-radius: 15px; cursor: pointer; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
 
-        h2 {
-            font-family: var(--title-font);
-            font-size: var(--title-size);
-            font-weight: 300;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--title-color);
-            margin-bottom: var(--esp-t-t);
-        }
+.modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+    display: none; align-items: center; justify-content: center; z-index: 4000; padding: 20px;
+}
+.modal-content {
+    background: rgba(255, 255, 255, 0.25); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 30px; width: 100%; max-width: 380px; padding: 2.5rem 1.5rem; color: white; position: relative;
+}
+.close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: white; cursor: pointer; }
 
-        .section-body {
-            margin-bottom: var(--esp-t-b);
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+#toast {
+    position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.85); color: white; padding: 10px 25px;
+    border-radius: 50px; font-size: 0.8rem; z-index: 7000; display: none;
+}
 
-        /* ── BOTONES ── */
-        .btn {
-            display: inline-block;
-            padding: 1rem 2.2rem;
-            margin: 10px;
-            background: var(--bg-1);
-            color: var(--title-color) !important;
-            border: 1px solid var(--accent);
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: 0.4s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
+#music-btn {
+    position: fixed; bottom: 25px; right: 25px; width: 45px; height: 45px;
+    background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 5000; cursor: pointer; color: var(--accent);
+}
 
-        .btn:hover {
-            background: var(--accent);
-            color: white !important;
-        }
+#lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 6000; display: none; align-items: center; justify-content: center; }
+#lightbox img { max-width: 90%; max-height: 80%; border-radius: 10px; }
 
-        /* ── CUENTA REGRESIVA ── */
-        .countdown-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            max-width: 400px;
-            margin: 2rem auto;
-        }
-
-        .cd-item {
-            background: white;
-            padding: 15px 5px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .cd-num {
-            display: block;
-            font-family: var(--title-font);
-            font-size: 1.6rem;
-            color: var(--accent);
-            font-weight: bold;
-        }
-
-        .cd-lab {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-color);
-        }
-
-        /* ── GALERÍA ── */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 2rem;
-        }
-
-        .gallery-item {
-            aspect-ratio: 1/1;
-            overflow: hidden;
-            border-radius: 15px;
-            cursor: pointer;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.4s;
-        }
-
-        /* ── MODALES Y OTROS ── */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 4000;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 30px;
-            width: 100%;
-            max-width: 380px;
-            padding: 2.5rem 1.5rem;
-            color: var(--text-color);
-            position: relative;
-        }
-
-        #toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.85);
-            color: white;
-            padding: 10px 25px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            z-index: 7000;
-            display: none;
-        }
-
-        #music-btn {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 45px;
-            height: 45px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            z-index: 5000;
-            cursor: pointer;
-            color: var(--accent);
-        }
-
-        #lightbox {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.9);
-            z-index: 6000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #lightbox img {
-            max-width: 90%;
-            max-height: 80%;
-            border-radius: 10px;
-        }
-
-        @media (min-width: 768px) {
-            .gallery-grid { grid-template-columns: repeat(4, 1fr); }
-        }
-    </style>
+@media (min-width: 768px) { 
+    .gallery-grid { grid-template-columns: repeat(4, 1fr); } 
+}
+</style>
 </head>
 <body>
 
-    <!-- MENSAJE FLOTANTE -->
-    <div id="toast">Copiado</div>
+<div id="toast">Cuenta copiada</div>
 
-    <!-- BOTÓN MÚSICA -->
-    <div id="music-btn" onclick="toggleMusic()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 18V5l12-2v13"></path>
-            <circle cx="6" cy="18" r="3"></circle>
-            <circle cx="18" cy="16" r="3"></circle>
-        </svg>
+<div id="music-btn" onclick="toggleMusic()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+</div>
+<audio id="bg-music" src="musica.mp3" loop></audio>
+
+<div id="cover">
+    <div id="cover-bg"></div>
+    <div id="cover-overlay"></div>
+    <div id="cover-content">
+        <span style="text-transform: uppercase; letter-spacing: 5px; font-size: 0.65rem; display: block; margin-bottom: 1.5rem;" id="t-eyebrow"></span>
+        <h1 id="t-names"></h1>
+        <p id="t-cover-date" style="letter-spacing: 3px; font-size: 0.8rem; margin-top: 1rem;"></p>
     </div>
-    <audio id="bg-music" src="musica.mp3" loop></audio>
+    <div class="scroll-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg></div>
+</div>
 
-    <!-- PORTADA -->
-    <div id="cover">
-        <div id="cover-bg"></div>
-        <div id="cover-overlay"></div>
-        <div id="cover-content">
-            <span id="t-eyebrow" style="text-transform: uppercase; letter-spacing: 5px; font-size: 0.65rem; display: block; margin-bottom: 1.5rem;"></span>
-            <h1 id="t-names"></h1>
-            <p id="t-cover-date" style="letter-spacing: 3px; font-size: 0.8rem; margin-top: 1rem;"></p>
+<div id="main-content"></div>
+
+<!-- Modal Regalos -->
+<div id="gift-modal" class="modal" onclick="closeGiftModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="closeGiftModal()">&times;</span>
+        <h2 style="color:white; font-size: 1.5rem; letter-spacing: 2px;">Regalo</h2>
+        <p id="m-texto" style="font-size: 0.85rem; margin-bottom: 10px; opacity: 0.9;"></p>
+        <div style="background: rgba(0,0,0,0.25); border-radius: 20px; padding: 1rem; margin: 1.5rem 0; text-align: left;">
+            <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Titular</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-titular"></span></div>
+            <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Banco</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-banco"></span></div>
+            <div style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Número</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-cuenta"></span></div>
+            <div style="padding: 8px 0;"><span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">CI</span><span style="font-size: 1rem; display: block; font-weight: 300;" id="m-ci"></span></div>
         </div>
+        <button class="btn" style="width: 100%; background:white; margin-top:0;" onclick="copyAcc()">Copiar número</button>
     </div>
+</div>
 
-    <!-- CONTENEDOR DE SECCIONES -->
-    <div id="main-content"></div>
+<div id="lightbox" onclick="closeLightbox()">
+    <span class="close-btn" style="position:fixed; top:30px; right:30px; font-size:3rem;">&times;</span>
+    <img src="" onclick="event.stopPropagation()">
+</div>
 
-    <!-- MODAL REGALOS -->
-    <div id="gift-modal" class="modal" onclick="closeGiftModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h2 style="font-size: 1.5rem; letter-spacing: 2px;">Regalo</h2>
-            <p id="m-texto" style="font-size: 0.85rem; margin-bottom: 10px; opacity: 0.9;"></p>
-            
-            <div style="background: #f9f9f9; border-radius: 20px; padding: 1rem; margin: 1.5rem 0; text-align: left; border: 1px solid #eee;">
-                <div style="padding: 8px 0; border-bottom: 1px solid #eee;">
-                    <span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Titular</span>
-                    <span style="font-size: 1rem; display: block; font-weight: 300;" id="m-titular"></span>
-                </div>
-                <div style="padding: 8px 0; border-bottom: 1px solid #eee;">
-                    <span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Banco</span>
-                    <span style="font-size: 1rem; display: block; font-weight: 300;" id="m-banco"></span>
-                </div>
-                <div style="padding: 8px 0; border-bottom: 1px solid #eee;">
-                    <span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">Número</span>
-                    <span style="font-size: 1rem; display: block; font-weight: 300;" id="m-cuenta"></span>
-                </div>
-                <div style="padding: 8px 0;">
-                    <span style="font-size: 0.6rem; text-transform: uppercase; opacity: 0.7;">CI</span>
-                    <span style="font-size: 1rem; display: block; font-weight: 300;" id="m-ci"></span>
-                </div>
-            </div>
-            
-            <button class="btn" style="width: 100%; margin: 0;" onclick="copyAcc()">
-                Copiar número
-            </button>
-        </div>
-    </div>
+<script>
+/* ════════════════════════════════════════
+   ★ CONFIGURACIÓN FÁCIL
+═════════════════════════════════════════= */
+const CONFIG = {
+    global: {
+        nombres: "Sofía & Martín",
+        frase: "¡Nos Casamos!",
+        fecha: "20 . 12 . 2026",
+        fechaCuenta: new Date(2026, 11, 20, 18, 0),
+        fotoPort: "cover.jpg",
 
-    <!-- LIGHTBOX GALERÍA -->
-    <div id="lightbox" onclick="closeLightbox()">
-        <img src="" id="lightbox-img">
-    </div>
+        /* ──── POSICIÓN DE LA FOTO (Usar números de 0 a 100) ──── */
+        /* 0 = Arriba de todo | 50 = Centro | 100 = Abajo de todo */
+        posicionVerticalPC: 35, 
+        posicionVerticalMovil: 50
+    },
+    diseno: {
+        /* ──── AJUSTE DE ESPACIOS (En pixeles) ──── */
+        espacioTituloATexto: 30, // Espacio entre el título y el párrafo
+        espacioTextoABoton: 40   // Espacio entre el párrafo y el botón
+    },
+    eventos: {
+        ceremonia: { t: "Ceremonia", f: "20 de diciembre", h: "17:00 Horas", l: "Iglesia San Franciso de Asís", d: "Cmno. Torres 3231, Montevideo, Uruguay", m: "https://www.google.com/maps" },
+        fiesta: { t: "Fiesta", f: "20 de diciembre", h: "21:00 horass", l: "salón de Eventos Aurora Palace", d: "Avda Las Palmas 1212, Montevideo, Uruguay", m: "https://www.google.com/maps" }
+    },
+    regalos: {
+        texto: "Si deseas hacernos un presente, puedes colaborar aquí:",
+        titular: "Sofía y Martín", banco: "Santander", cuenta: "1234567890", ci: "1.234.567-8"
+    },
+    cierre: { t: "¡Te esperamos!", s: "Tu presencia es muy importante para nosotros." },
+    fotos: ["foto1.jpg", "foto2.jpg", "foto3.jpg", "foto4.jpg", "foto5.jpg", "foto6.jpg", "foto7.jpg", "foto8.jpg", "foto9.jpg", "foto10.jpg"]
+};
 
-    <script>
-        /* ════════════════════════════════════════
-           ★ CONFIGURACIÓN FÁCIL (EDITA AQUÍ)
-           ════════════════════════════════════════ */
-        const CONFIG = {
-            
-            // 1. DATOS PRINCIPALES
-            global: {
-                nombres: "Sofía & Martín",
-                frase: "¡Nos Casamos!",
-                fecha: "20 . 12 . 2026",
-                // Fecha de cuenta regresiva (Año, Mes-1, Día, Hora, Min)
-                fechaCuenta: new Date(2026, 11, 20, 18, 0), 
-                fotoPort: "cover.jpg",
-                
-                // Posición de la foto (0 arriba, 100 abajo)
-                posicionVerticalPC: 35, 
-                posicionVerticalMovil: 50,
+// --- APLICAR CONFIGURACIÓN AUTOMÁTICAMENTE ---
+const root = document.documentElement;
+root.style.setProperty('--pos-pc-vertical', CONFIG.global.posicionVerticalPC + '%');
+root.style.setProperty('--pos-movil-vertical', CONFIG.global.posicionVerticalMovil + '%');
+root.style.setProperty('--espacio-titulo-texto', CONFIG.diseno.espacioTituloATexto + 'px');
+root.style.setProperty('--espacio-texto-boton', CONFIG.diseno.espacioTextoABoton + 'px');
 
-                // PALETA: "rosado", "eucalipto", "azul_noche", "boho", 
-                // "minimal", "lavanda", "arena", "forest"
-                paletaElegida: "rosado" 
-            },
+document.getElementById('cover-bg').style.backgroundImage = `url('${CONFIG.global.fotoPort}')`;
+document.getElementById('t-names').innerHTML = CONFIG.global.nombres.replace('&', '<em>&</em>');
+document.getElementById('t-eyebrow').innerText = CONFIG.global.frase;
+document.getElementById('t-cover-date').innerText = CONFIG.global.fecha;
 
-            // 2. DISEÑO Y ESPACIOS
-            diseno: {
-                espacioTituloATexto: 35, // Píxeles
-                espacioTextoABoton: 45   // Píxeles
-            },
+const main = document.getElementById('main-content');
+const iconSet = {
+    heart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`,
+    calendar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
+    map: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    camera: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
+    rings: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="8" cy="12" r="6"/><circle cx="16" cy="12" r="6"/></svg>`,
+    gift: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>`
+};
 
-            // 3. EVENTOS (Ceremonia y Fiesta)
-            eventos: {
-                ceremonia: {
-                    titulo: "Ceremonia",
-                    fecha: "20 de Diciembre",
-                    hora: "17:00 Hs",
-                    lugar: "Iglesia San Francisco",
-                    direccion: "Montevideo, Uruguay",
-                    linkMapa: "https://maps.google.com"
-                },
-                fiesta: {
-                    titulo: "Fiesta",
-                    fecha: "20 de Diciembre",
-                    hora: "21:00 Hs",
-                    lugar: "Salón Aurora",
-                    direccion: "Montevideo, Uruguay",
-                    linkMapa: "https://maps.google.com"
-                }
-            },
+function createSec(id, icon, title, body) {
+    const s = document.createElement('section');
+    s.id = id;
+    s.innerHTML = `<div style="max-width:800px; margin:0 auto;"><div class="icon-container">${iconSet[icon]}</div><h2>${title}</h2>${body}</div>`;
+    main.appendChild(s);
+}
 
-            // 4. REGALOS
-            regalos: {
-                texto: "Tu presencia es nuestro mejor regalo, pero si deseas hacernos un presente:",
-                titular: "Sofía y Martín",
-                banco: "Santander",
-                cuenta: "1234567890",
-                ci: "1.234.567-8"
-            },
+// Renderizado de secciones
+createSec('historia', 'heart', 'Nuestra Historia', '<p>En un mundo lleno de coincidencias, encontrarnos fue nuestro momento favorito.</p>');
+createSec('cuenta', 'calendar', 'Falta Poco', `<div class="countdown-grid"><div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div><div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Hs</span></div><div class="cd-item"><span class="cd-num" id="mins">00</span><span class="cd-lab">Min</span></div><div class="cd-item"><span class="cd-num" id="secs">00</span><span class="cd-lab">Seg</span></div></div>`);
+createSec('ubicacion', 'map', 'Dónde & Cuándo', `<div><h3>${CONFIG.eventos.ceremonia.t}</h3><p>${CONFIG.eventos.ceremonia.f} - ${CONFIG.eventos.ceremonia.h}<br>${CONFIG.eventos.ceremonia.l}<br>${CONFIG.eventos.ceremonia.d}</p><a href="${CONFIG.eventos.ceremonia.m}" target="_blank" class="btn">Ver Mapa</a></div><div style="margin-top:3rem"><h3>${CONFIG.eventos.fiesta.t}</h3><p>${CONFIG.eventos.fiesta.f} - ${CONFIG.eventos.fiesta.h}<br>${CONFIG.eventos.fiesta.l}<br>${CONFIG.eventos.fiesta.d}</p><a href="${CONFIG.eventos.fiesta.m}" target="_blank" class="btn">Ver Mapa</a></div>`);
+let g = `<div class="gallery-grid">`;
+CONFIG.fotos.forEach(f => g += `<div class="gallery-item" onclick="openLightbox('${f}')"><img src="${f}"></div>`);
+createSec('galeria', 'camera', 'Momentos', g + `</div>`);
+createSec('rsvp', 'rings', 'Confirmación', `<p>Por favor, confirma tu asistencia antes del 10 de diciembre.</p><a href="https://wa.me/59899000000" target="_blank" class="btn">Confirmar WhatsApp</a>`);
+createSec('regalos', 'gift', 'Regalos', `<p>${CONFIG.regalos.texto}</p><button class="btn" onclick="openGiftModal()">Ver Datos</button>`);
+createSec('cierre', 'heart', CONFIG.cierre.t, `<p>${CONFIG.cierre.s}</p><div style="width:120px; margin:2rem auto; color:var(--accent); opacity:0.5;"><svg viewBox="0 0 100 20" stroke="currentColor"><path d="M0 10 Q25 0 50 10 T100 10" fill="none"/></svg></div>`);
 
-            // 5. CIERRE
-            cierre: {
-                titulo: "¡Te esperamos!",
-                subtitulo: "Tu presencia es muy importante para nosotros."
-            },
-
-            // 6. GALERÍA (Nombres de tus fotos)
-            fotos: [
-                "foto1.jpg", 
-                "foto2.jpg", 
-                "foto3.jpg", 
-                "foto4.jpg", 
-                "foto5.jpg", 
-                "foto6.jpg", 
-                "foto7.jpg", 
-                "foto8.jpg"
-            ]
-        };
-
-        /* ── DICCIONARIO DE PALETAS ── */
-        const PALETAS = {
-            rosado:     { bg1: "#FFFFFF", bg2: "#F9F4F4", accent: "#D4A5A5", title: "#4A3B3B", text: "#8A7575" },
-            eucalipto:  { bg1: "#FFFFFF", bg2: "#E2E8E4", accent: "#8B9A90", title: "#2D3B33", text: "#5E6B63" },
-            azul_noche: { bg1: "#FFFFFF", bg2: "#E6EBF2", accent: "#5D7694", title: "#1A2634", text: "#4A5A6E" },
-            boho:       { bg1: "#FDFBF9", bg2: "#F2E8DF", accent: "#C68B5C", title: "#4D3422", text: "#7A6353" },
-            minimal:    { bg1: "#FFFFFF", bg2: "#F5F5F5", accent: "#333333", title: "#000000", text: "#666666" },
-            lavanda:    { bg1: "#FFFFFF", bg2: "#F0EBF4", accent: "#A695BB", title: "#3E344D", text: "#6F637E" },
-            arena:      { bg1: "#FFFFFF", bg2: "#F7F2E9", accent: "#D1BFA7", title: "#5C5449", text: "#8C8375" },
-            forest:     { bg1: "#FFFFFF", bg2: "#EDF2EA", accent: "#7A8C74", title: "#2E362C", text: "#586355" }
-        };
-
-        /* ── ICONOS SVG ── */
-        const icons = {
-            heart:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`,
-            calendar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
-            map:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
-            camera:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
-            rings:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="8" cy="12" r="6"/><circle cx="16" cy="12" r="6"/></svg>`,
-            gift:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>`
-        };
-
-        /* ── INICIO DE LA APLICACIÓN ── */
-        window.onload = function() {
-            
-            // Aplicar colores de la paleta
-            const p = PALETAS[CONFIG.global.paletaElegida] || PALETAS.rosado;
-            const r = document.documentElement.style;
-            
-            r.setProperty('--bg-1', p.bg1);
-            r.setProperty('--bg-2', p.bg2);
-            r.setProperty('--accent', p.accent);
-            r.setProperty('--title-color', p.title);
-            r.setProperty('--text-color', p.text);
-
-            // Aplicar posiciones y espacios
-            r.setProperty('--pos-pc', CONFIG.global.posicionVerticalPC + '%');
-            r.setProperty('--pos-mo', CONFIG.global.posicionVerticalMovil + '%');
-            r.setProperty('--esp-t-t', CONFIG.diseno.espacioTituloATexto + 'px');
-            r.setProperty('--esp-t-b', CONFIG.diseno.espacioTextoABoton + 'px');
-
-            // Cargar datos en la Portada
-            document.getElementById('cover-bg').style.backgroundImage = `url('${CONFIG.global.fotoPort}')`;
-            document.getElementById('t-names').innerHTML = CONFIG.global.nombres.replace('&', '<em>&</em>');
-            document.getElementById('t-eyebrow').innerText = CONFIG.global.frase;
-            document.getElementById('t-cover-date').innerText = CONFIG.global.fecha;
-
-            // Generar Secciones
-            const main = document.getElementById('main-content');
-            
-            const addSec = (id, ico, tit, cont) => {
-                const s = document.createElement('section');
-                s.id = id;
-                s.innerHTML = `
-                    <div style="max-width:800px; margin:0 auto;">
-                        <div class="icon-container">${icons[ico]}</div>
-                        <h2>${tit}</h2>
-                        <div class="section-body">${cont}</div>
-                    </div>`;
-                main.appendChild(s);
-            };
-
-            // 1. Historia
-            addSec('historia', 'heart', 'Nuestra Historia', 
-                '<p>En un mundo lleno de coincidencias, encontrarnos fue nuestro momento favorito.</p>');
-            
-            // 2. Cuenta Regresiva
-            addSec('cuenta', 'calendar', 'Falta Poco', `
-                <div class="countdown-grid">
-                    <div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div>
-                    <div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Hs</span></div>
-                    <div class="cd-item"><span class="cd-num" id="mins">00</span><span class="cd-lab">Min</span></div>
-                    <div class="cd-item"><span class="cd-num" id="secs">00</span><span class="cd-lab">Seg</span></div>
-                </div>
-            `);
-
-            // 3. Ubicaciones
-            addSec('donde', 'map', 'Cuándo & Dónde', `
-                <div style="margin-bottom:3rem">
-                    <h3>${CONFIG.eventos.ceremonia.titulo}</h3>
-                    <p>
-                        ${CONFIG.eventos.ceremonia.fecha} - ${CONFIG.eventos.ceremonia.hora}<br>
-                        ${CONFIG.eventos.ceremonia.lugar}<br>
-                        ${CONFIG.eventos.ceremonia.direccion}
-                    </p>
-                    <a href="${CONFIG.eventos.ceremonia.linkMapa}" target="_blank" class="btn">Ver Mapa</a>
-                </div>
-                <div>
-                    <h3>${CONFIG.eventos.fiesta.titulo}</h3>
-                    <p>
-                        ${CONFIG.eventos.fiesta.fecha} - ${CONFIG.eventos.fiesta.hora}<br>
-                        ${CONFIG.eventos.fiesta.lugar}<br>
-                        ${CONFIG.eventos.fiesta.direccion}
-                    </p>
-                    <a href="${CONFIG.eventos.fiesta.linkMapa}" target="_blank" class="btn">Ver Mapa</a>
-                </div>
-            `);
-
-            // 4. Galería
-            let gHtml = '<div class="gallery-grid">';
-            CONFIG.fotos.forEach(f => { 
-                gHtml += `<div class="gallery-item" onclick="openLightbox('${f}')">
-                            <img src="${f}">
-                          </div>`; 
-            });
-            addSec('galeria', 'camera', 'Momentos', gHtml + '</div>');
-
-            // 5. RSVP
-            addSec('confirmar', 'rings', 'Confirmación', `
-                <p>Por favor, confirma tu asistencia antes del 10 de diciembre.</p>
-                <a href="https://wa.me/59899000000" target="_blank" class="btn">Confirmar WhatsApp</a>
-            `);
-            
-            // 6. Regalos
-            addSec('regalo', 'gift', 'Regalos', `
-                <p>${CONFIG.regalos.texto}</p>
-                <button class="btn" onclick="openGiftModal()">Ver Datos</button>
-            `);
-            
-            // 7. Cierre
-            addSec('cierre', 'heart', CONFIG.cierre.titulo, 
-                `<p>${CONFIG.cierre.subtitulo}</p>`);
-
-            // Iniciar Reloj
-            updateCD();
-            setInterval(updateCD, 1000);
-
-            // Efecto aparecer al hacer scroll
-            const obs = new IntersectionObserver(es => {
-                es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('section').forEach(s => obs.observe(s));
-        };
-
-        /* ── FUNCIONES DE LÓGICA ── */
-        function updateCD() {
-            const t = CONFIG.global.fechaCuenta - new Date();
-            if(t < 0) return;
-            document.getElementById('days').innerText  = Math.floor(t / 86400000);
-            document.getElementById('hours').innerText = Math.floor((t / 3600000) % 24);
-            document.getElementById('mins').innerText  = Math.floor((t / 60000) % 60);
-            document.getElementById('secs').innerText  = Math.floor((t / 1000) % 60);
-        }
-
-        function openLightbox(src) {
-            document.getElementById('lightbox-img').src = src;
-            document.getElementById('lightbox').style.display = 'flex';
-        }
-
-        function closeLightbox() {
-            document.getElementById('lightbox').style.display = 'none';
-        }
-
-        function openGiftModal() {
-            const r = CONFIG.regalos;
-            document.getElementById('m-texto').innerText   = r.texto;
-            document.getElementById('m-titular').innerText = r.titular;
-            document.getElementById('m-banco').innerText   = r.banco;
-            document.getElementById('m-cuenta').innerText  = r.cuenta;
-            document.getElementById('m-ci').innerText      = r.ci;
-            document.getElementById('gift-modal').style.display = 'flex';
-        }
-
-        function closeGiftModal() {
-            document.getElementById('gift-modal').style.display = 'none';
-        }
-
-        function copyAcc() {
-            navigator.clipboard.writeText(CONFIG.regalos.cuenta);
-            const t = document.getElementById('toast');
-            t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 2000);
-        }
-
-        function toggleMusic() {
-            const m = document.getElementById('bg-music');
-            m.paused ? m.play() : m.pause();
-        }
-    </script>
+// --- LÓGICA DE FUNCIONAMIENTO ---
+function openLightbox(s) { document.getElementById('lightbox').querySelector('img').src = s; document.getElementById('lightbox').style.display = 'flex'; history.pushState({v:'lb'}, ""); }
+function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; }
+function openGiftModal() {
+    const r = CONFIG.regalos;
+    document.getElementById('m-texto').innerText = r.texto;
+    document.getElementById('m-titular').innerText = r.titular;
+    document.getElementById('m-banco').innerText = r.banco;
+    document.getElementById('m-cuenta').innerText = r.cuenta;
+    document.getElementById('m-ci').innerText = r.ci;
+    document.getElementById('gift-modal').style.display = 'flex';
+    history.pushState({v:'mo'}, "");
+}
+function closeGiftModal() { document.getElementById('gift-modal').style.display = 'none'; }
+window.onpopstate = () => { closeLightbox(); closeGiftModal(); };
+function copyAcc() { navigator.clipboard.writeText(CONFIG.regalos.cuenta); const t = document.getElementById('toast'); t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 2000); }
+function toggleMusic() { const m = document.getElementById('bg-music'); m.paused ? m.play() : m.pause(); }
+function updateCD() {
+    const t = CONFIG.global.fechaCuenta - new Date();
+    if(t<0) return;
+    document.getElementById('days').innerText = Math.floor(t/86400000);
+    document.getElementById('hours').innerText = Math.floor((t/3600000)%24);
+    document.getElementById('mins').innerText = Math.floor((t/60000)%60);
+    document.getElementById('secs').innerText = Math.floor((t/1000)%60);
+}
+setInterval(updateCD, 1000);
+const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
+document.querySelectorAll('section').forEach(s => obs.observe(s));
+</script>
 </body>
 </html>
