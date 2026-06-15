@@ -20,12 +20,24 @@
   --body-font: 'Jost', sans-serif;
   --title-size: 2.2rem;
   
-  /* Estas variables se llenan automáticamente con el menú CONFIG */
   --espacio-titulo-texto: 2rem;
   --espacio-texto-boton: 1.5rem;
   --pos-pc-vertical: 50%;
   --pos-movil-vertical: 50%;
 }
+
+/* ── PANTALLA DE CARGA (Para que todo aparezca junto) ── */
+#loading-overlay {
+    position: fixed; inset: 0; background: var(--bg-1);
+    z-index: 9999; display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.8s ease;
+}
+.spinner {
+    width: 40px; height: 40px; border: 3px solid var(--bg-2);
+    border-top: 3px solid var(--accent); border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 /* ── RESET & BASE ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,28 +45,23 @@ html { scroll-behavior: smooth; }
 body { 
     background-color: var(--bg-1); color: var(--text-color); 
     font-family: var(--body-font); line-height: 1.6; text-align: center;
+    overflow-x: hidden;
 }
 
 /* ── PORTADA ── */
 #cover {
   position: relative; height: 100vh; display: flex; 
   align-items: center; justify-content: center; overflow: hidden; color: white;
+  opacity: 0; transition: opacity 1.2s ease; /* Aparecerá suavemente */
 }
 #cover-bg { 
     position: absolute; inset: 0; 
-    background-size: cover; 
-    background-repeat: no-repeat;
-    /* Posición por defecto para celular */
+    background-size: cover; background-repeat: no-repeat;
     background-position: center var(--pos-movil-vertical); 
 }
-
-/* Ajuste preciso para PC */
 @media (min-width: 768px) {
-    #cover-bg {
-        background-position: center var(--pos-pc-vertical) !important;
-    }
+    #cover-bg { background-position: center var(--pos-pc-vertical) !important; }
 }
-
 #cover-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); }
 #cover-content { position: relative; z-index: 2; padding: 20px; }
 #cover h1 { font-family: var(--title-font); font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 300; letter-spacing: 2px; }
@@ -62,13 +69,12 @@ body {
 /* ── ICONOS FLOTANTES ── */
 .icon-container {
     width: 45px; margin: 0 auto; color: var(--accent);
-    margin-bottom: var(--espacio-titulo-texto); /* Usa el espaciado configurable */
+    margin-bottom: var(--espacio-titulo-texto);
     animation: floating 3s ease-in-out infinite;
 }
 @keyframes floating {
-    0% { transform: translateY(0px); }
+    0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-12px); }
-    100% { transform: translateY(0px); }
 }
 
 /* ── SECCIONES ── */
@@ -76,27 +82,22 @@ section { padding: 6rem 1.5rem; opacity: 0; transform: translateY(20px); transit
 section.visible { opacity: 1; transform: translateY(0); }
 section:nth-of-type(odd) { background-color: var(--bg-1) !important; }
 section:nth-of-type(even) { background-color: var(--bg-2) !important; }
-
 h2 { 
     font-family: var(--title-font); font-size: var(--title-size); 
     font-weight: 300; letter-spacing: 4px; text-transform: uppercase;
-    color: var(--title-color); 
-    margin-bottom: var(--espacio-titulo-texto); /* ESPACIADO TITULO -> TEXTO */
+    color: var(--title-color); margin-bottom: var(--espacio-titulo-texto);
 }
 
-/* ── BOTONES ── */
 .btn {
-    display: inline-block; padding: 1rem 2.2rem; 
-    margin-top: var(--espacio-texto-boton); /* ESPACIADO TEXTO -> BOTON */
+    display: inline-block; padding: 1rem 2.2rem; margin-top: var(--espacio-texto-boton);
     background: linear-gradient(145deg, #ffffff, var(--bg-2));
     color: var(--title-color) !important; border: 1px solid var(--accent); 
     border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; 
     letter-spacing: 3px; text-decoration: none; cursor: pointer; transition: 0.4s;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
-.btn:hover { transform: translateY(-2px); background: #ffffff; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); }
 
-/* ── OTROS ELEMENTOS ── */
+/* ── OTROS ── */
 .scroll-arrow {
     position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%);
     width: 30px; height: 30px; color: white; z-index: 10; animation: bounce 2s infinite;
@@ -120,29 +121,27 @@ h2 {
     background: rgba(255, 255, 255, 0.25); border: 1px solid rgba(255,255,255,0.3);
     border-radius: 30px; width: 100%; max-width: 380px; padding: 2.5rem 1.5rem; color: white; position: relative;
 }
-.close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: white; cursor: pointer; }
-
 #toast {
     position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
     background: rgba(0,0,0,0.85); color: white; padding: 10px 25px;
     border-radius: 50px; font-size: 0.8rem; z-index: 7000; display: none;
 }
-
 #music-btn {
     position: fixed; bottom: 25px; right: 25px; width: 45px; height: 45px;
     background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 5000; cursor: pointer; color: var(--accent);
 }
-
 #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 6000; display: none; align-items: center; justify-content: center; }
 #lightbox img { max-width: 90%; max-height: 80%; border-radius: 10px; }
-
-@media (min-width: 768px) { 
-    .gallery-grid { grid-template-columns: repeat(4, 1fr); } 
-}
+@media (min-width: 768px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); } }
 </style>
 </head>
 <body>
+
+<!-- Pantalla de carga -->
+<div id="loading-overlay">
+    <div class="spinner"></div>
+</div>
 
 <div id="toast">Cuenta copiada</div>
 
@@ -167,7 +166,6 @@ h2 {
 <!-- Modal Regalos -->
 <div id="gift-modal" class="modal" onclick="closeGiftModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-btn" onclick="closeGiftModal()">&times;</span>
         <h2 style="color:white; font-size: 1.5rem; letter-spacing: 2px;">Regalo</h2>
         <p id="m-texto" style="font-size: 0.85rem; margin-bottom: 10px; opacity: 0.9;"></p>
         <div style="background: rgba(0,0,0,0.25); border-radius: 20px; padding: 1rem; margin: 1.5rem 0; text-align: left;">
@@ -181,14 +179,10 @@ h2 {
 </div>
 
 <div id="lightbox" onclick="closeLightbox()">
-    <span class="close-btn" style="position:fixed; top:30px; right:30px; font-size:3rem;">&times;</span>
     <img src="" onclick="event.stopPropagation()">
 </div>
 
 <script>
-/* ════════════════════════════════════════
-   ★ CONFIGURACIÓN FÁCIL
-═════════════════════════════════════════= */
 const CONFIG = {
     global: {
         nombres: "Sofía & Martín",
@@ -196,16 +190,12 @@ const CONFIG = {
         fecha: "20 . 12 . 2026",
         fechaCuenta: new Date(2026, 11, 20, 18, 0),
         fotoPort: "cover.jpg",
-
-        /* ──── POSICIÓN DE LA FOTO (Usar números de 0 a 100) ──── */
-        /* 0 = Arriba de todo | 50 = Centro | 100 = Abajo de todo */
         posicionVerticalPC: 35, 
         posicionVerticalMovil: 50
     },
     diseno: {
-        /* ──── AJUSTE DE ESPACIOS (En pixeles) ──── */
-        espacioTituloATexto: 30, // Espacio entre el título y el párrafo
-        espacioTextoABoton: 40   // Espacio entre el párrafo y el botón
+        espacioTituloATexto: 30,
+        espacioTextoABoton: 40
     },
     eventos: {
         ceremonia: { t: "Ceremonia", f: "20 de diciembre", h: "17:00 Horas", l: "Iglesia San Franciso de Asís", d: "Cmno. Torres 3231, Montevideo, Uruguay", m: "https://www.google.com/maps" },
@@ -219,14 +209,23 @@ const CONFIG = {
     fotos: ["foto1.jpg", "foto2.jpg", "foto3.jpg", "foto4.jpg", "foto5.jpg", "foto6.jpg", "foto7.jpg", "foto8.jpg", "foto9.jpg", "foto10.jpg"]
 };
 
-// --- APLICAR CONFIGURACIÓN AUTOMÁTICAMENTE ---
+// --- PRECARGA DE IMAGEN DE PORTADA ---
+const coverImg = new Image();
+coverImg.src = CONFIG.global.fotoPort;
+coverImg.onload = function() {
+    // Cuando la imagen carga, aplicamos estilos y mostramos todo
+    document.getElementById('cover-bg').style.backgroundImage = `url('${CONFIG.global.fotoPort}')`;
+    document.getElementById('loading-overlay').style.opacity = '0';
+    document.getElementById('cover').style.opacity = '1';
+    setTimeout(() => { document.getElementById('loading-overlay').remove(); }, 800);
+};
+
 const root = document.documentElement;
 root.style.setProperty('--pos-pc-vertical', CONFIG.global.posicionVerticalPC + '%');
 root.style.setProperty('--pos-movil-vertical', CONFIG.global.posicionVerticalMovil + '%');
 root.style.setProperty('--espacio-titulo-texto', CONFIG.diseno.espacioTituloATexto + 'px');
 root.style.setProperty('--espacio-texto-boton', CONFIG.diseno.espacioTextoABoton + 'px');
 
-document.getElementById('cover-bg').style.backgroundImage = `url('${CONFIG.global.fotoPort}')`;
 document.getElementById('t-names').innerHTML = CONFIG.global.nombres.replace('&', '<em>&</em>');
 document.getElementById('t-eyebrow').innerText = CONFIG.global.frase;
 document.getElementById('t-cover-date').innerText = CONFIG.global.fecha;
@@ -248,45 +247,12 @@ function createSec(id, icon, title, body) {
     main.appendChild(s);
 }
 
-// Renderizado de secciones
 createSec('historia', 'heart', 'Nuestra Historia', '<p>En un mundo lleno de coincidencias, encontrarnos fue nuestro momento favorito.</p>');
 createSec('cuenta', 'calendar', 'Falta Poco', `<div class="countdown-grid"><div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div><div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Hs</span></div><div class="cd-item"><span class="cd-num" id="mins">00</span><span class="cd-lab">Min</span></div><div class="cd-item"><span class="cd-num" id="secs">00</span><span class="cd-lab">Seg</span></div></div>`);
 createSec('ubicacion', 'map', 'Dónde & Cuándo', `<div><h3>${CONFIG.eventos.ceremonia.t}</h3><p>${CONFIG.eventos.ceremonia.f} - ${CONFIG.eventos.ceremonia.h}<br>${CONFIG.eventos.ceremonia.l}<br>${CONFIG.eventos.ceremonia.d}</p><a href="${CONFIG.eventos.ceremonia.m}" target="_blank" class="btn">Ver Mapa</a></div><div style="margin-top:3rem"><h3>${CONFIG.eventos.fiesta.t}</h3><p>${CONFIG.eventos.fiesta.f} - ${CONFIG.eventos.fiesta.h}<br>${CONFIG.eventos.fiesta.l}<br>${CONFIG.eventos.fiesta.d}</p><a href="${CONFIG.eventos.fiesta.m}" target="_blank" class="btn">Ver Mapa</a></div>`);
 let g = `<div class="gallery-grid">`;
 CONFIG.fotos.forEach(f => g += `<div class="gallery-item" onclick="openLightbox('${f}')"><img src="${f}"></div>`);
 createSec('galeria', 'camera', 'Momentos', g + `</div>`);
-createSec('rsvp', 'rings', 'Confirmación', `<p>Por favor, confirma tu asistencia antes del 10 de diciembre.</p><a href="https://wa.me/59899000000" target="_blank" class="btn">Confirmar WhatsApp</a>`);
+createSec('rsvp', 'rings', 'Confirmación', `<p>Confirmar asistencia antes del 10 de diciembre.</p><a href="https://wa.me/59899000000" target="_blank" class="btn">WhatsApp</a>`);
 createSec('regalos', 'gift', 'Regalos', `<p>${CONFIG.regalos.texto}</p><button class="btn" onclick="openGiftModal()">Ver Datos</button>`);
-createSec('cierre', 'heart', CONFIG.cierre.t, `<p>${CONFIG.cierre.s}</p><div style="width:120px; margin:2rem auto; color:var(--accent); opacity:0.5;"><svg viewBox="0 0 100 20" stroke="currentColor"><path d="M0 10 Q25 0 50 10 T100 10" fill="none"/></svg></div>`);
-
-// --- LÓGICA DE FUNCIONAMIENTO ---
-function openLightbox(s) { document.getElementById('lightbox').querySelector('img').src = s; document.getElementById('lightbox').style.display = 'flex'; history.pushState({v:'lb'}, ""); }
-function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; }
-function openGiftModal() {
-    const r = CONFIG.regalos;
-    document.getElementById('m-texto').innerText = r.texto;
-    document.getElementById('m-titular').innerText = r.titular;
-    document.getElementById('m-banco').innerText = r.banco;
-    document.getElementById('m-cuenta').innerText = r.cuenta;
-    document.getElementById('m-ci').innerText = r.ci;
-    document.getElementById('gift-modal').style.display = 'flex';
-    history.pushState({v:'mo'}, "");
-}
-function closeGiftModal() { document.getElementById('gift-modal').style.display = 'none'; }
-window.onpopstate = () => { closeLightbox(); closeGiftModal(); };
-function copyAcc() { navigator.clipboard.writeText(CONFIG.regalos.cuenta); const t = document.getElementById('toast'); t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 2000); }
-function toggleMusic() { const m = document.getElementById('bg-music'); m.paused ? m.play() : m.pause(); }
-function updateCD() {
-    const t = CONFIG.global.fechaCuenta - new Date();
-    if(t<0) return;
-    document.getElementById('days').innerText = Math.floor(t/86400000);
-    document.getElementById('hours').innerText = Math.floor((t/3600000)%24);
-    document.getElementById('mins').innerText = Math.floor((t/60000)%60);
-    document.getElementById('secs').innerText = Math.floor((t/1000)%60);
-}
-setInterval(updateCD, 1000);
-const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
-document.querySelectorAll('section').forEach(s => obs.observe(s));
-</script>
-</body>
-</html>
+createSec('cierre', 'heart', CONFIG.cierre.t, `<p>${CONFIG.cierre.s}</p><div style="width:120px; margin:2rem auto; color:var(--accent); opacity:0.5;"><svg viewBox="0 0 100 20" stroke="currentColor"><path d="M0 10 Q25 0 50 10 T100 10" fill="none"/></sv
