@@ -1,1 +1,1 @@
-# Boda invitación imteractiva
+# Boda invitación interactiva
