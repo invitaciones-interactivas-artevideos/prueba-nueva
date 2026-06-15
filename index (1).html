@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación Digital Premium</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link id="font-link" href="" rel="stylesheet">
+
+<style>
+/* ── VARIABLES DE DISEÑO ── */
+:root {
+  --bg-1: #ffffff;
+  --bg-2: #f9f9f9;
+  --accent: #C9A98C;
+  --title-color: #2E2822;
+  --text-color: #8C7B6E;
+  --title-font: 'Cormorant Garamond', serif;
+  --body-font: 'Jost', sans-serif;
+  --title-size: 3.5rem;
+  --title-lh: 1.2; /* Interlineado */
+  --text-size: 1.1rem;
+  --section-spacing: 7rem;
+}
+
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { 
+    background-color: var(--bg-1); 
+    color: var(--text-color); 
+    font-family: var(--body-font); 
+    line-height: 1.7;
+    overflow-x: hidden;
+}
+
+/* ── ANIMACIONES ── */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.icon-wrapper {
+    width: 60px; height: 60px; margin: 0 auto 1.5rem;
+    color: var(--accent);
+}
+.icon-wrapper svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.2; }
+
+/* ── PORTADA ── */
+#cover {
+  position: relative; height: 100vh; display: flex; 
+  align-items: center; justify-content: center; overflow: hidden;
+  text-align: center; color: white;
+}
+#cover-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  transform: scale(1.05);
+}
+#cover-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5));
+}
+#cover-content { position: relative; z-index: 2; padding: 20px; animation: fadeInUp 2s ease; }
+#cover h1 { 
+    font-family: var(--title-font); font-size: clamp(3.2rem, 12vw, 6.5rem); 
+    font-weight: 300; line-height: 1; margin-bottom: 1rem;
+}
+.eyebrow { text-transform: uppercase; letter-spacing: 6px; font-size: 0.75rem; margin-bottom: 2rem; display: block; }
+
+/* ── SECCIONES ── */
+.section-wrapper {
+    padding: var(--section-spacing) 1.5rem;
+    display: flex; flex-direction: column; align-items: center;
+    opacity: 0; transition: all 1.2s ease-out;
+}
+.section-wrapper.visible { opacity: 1; }
+
+.section-wrapper:nth-child(odd) { background-color: var(--bg-1); }
+.section-wrapper:nth-child(even) { background-color: var(--bg-2); }
+
+.container { max-width: 900px; width: 100%; text-align: center; }
+
+h2 {
+    font-family: var(--title-font);
+    font-size: var(--title-size);
+    color: var(--title-color);
+    line-height: var(--title-lh);
+    font-weight: 300; margin-bottom: 1.5rem;
+}
+h2 em { font-style: italic; font-family: inherit; }
+
+/* ── GALERÍA INTERACTIVA ── */
+.gallery-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    gap: 15px; margin-top: 3rem;
+}
+.gallery-item {
+    overflow: hidden; border-radius: 4px; aspect-ratio: 1/1;
+    cursor: pointer; position: relative;
+}
+.gallery-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.gallery-item:hover img { transform: scale(1.1); }
+.g-large { grid-column: span 3; }
+.g-small { grid-column: span 2; }
+
+/* Lightbox Simple */
+#lightbox {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+    z-index: 1000; display: none; align-items: center; justify-content: center;
+    cursor: zoom-out;
+}
+#lightbox img { max-width: 90%; max-height: 80%; border: 5px solid white; }
+
+/* ── MODAL REGALOS ── */
+.modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    display: none; align-items: center; justify-content: center; z-index: 2000;
+}
+.modal-content {
+    background: var(--bg-1); padding: 3rem; border-radius: 8px;
+    max-width: 500px; width: 90%; text-align: center; position: relative;
+}
+.close-modal { position: absolute; top: 1rem; right: 1rem; cursor: pointer; font-size: 1.5rem; }
+
+/* ── BOTONES ── */
+.btn {
+    display: inline-block; padding: 1.2rem 2.8rem;
+    border: 1px solid var(--accent);
+    color: var(--accent); text-decoration: none;
+    text-transform: uppercase; letter-spacing: 3px; font-size: 0.7rem;
+    transition: all 0.4s; background: transparent; margin-top: 1.5rem;
+    cursor: pointer;
+}
+.btn:hover { background: var(--accent); color: white; }
+
+/* ── ORNAMENTO FINAL ── */
+.ornament { width: 200px; margin: 3rem auto; opacity: 0.6; color: var(--accent); }
+
+/* ── CUENTA REGRESIVA ── */
+.countdown-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1rem; margin-top: 2rem;
+}
+.cd-num { display: block; font-family: var(--title-font); font-size: 3rem; color: var(--accent); }
+.cd-lab { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; }
+
+@media (max-width: 768px) {
+    :root { --section-spacing: 4rem; --title-size: 2.5rem; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .g-large, .g-small { grid-column: span 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- Portada -->
+<div id="cover">
+    <div id="cover-bg"></div>
+    <div id="cover-overlay"></div>
+    <div id="cover-content">
+        <span class="eyebrow" id="t-eyebrow"></span>
+        <h1 id="t-names"></h1>
+        <p id="t-cover-date" style="color:white; letter-spacing:3px; text-transform:uppercase; font-size:0.8rem;"></p>
+    </div>
+</div>
+
+<!-- Contenido Principal -->
+<div id="main-content"></div>
+
+<!-- Modal de Regalos -->
+<div id="gift-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeGiftModal()">&times;</span>
+        <h2 style="font-size: 2rem;">Datos Bancarios</h2>
+        <div id="bank-details" style="margin-top: 1.5rem; text-align: left; line-height: 2;">
+            <!-- Se llena por JS -->
+        </div>
+    </div>
+</div>
+
+<!-- Lightbox Galería -->
+<div id="lightbox" onclick="this.style.display='none'"><img src="" alt=""></div>
+
+<script>
+/* ════════════════════════════════════════
+   ★ CONFIGURACIÓN FÁCIL (EDITA AQUÍ)
+═════════════════════════════════════════= */
+
+const CONFIG = {
+    // 1. PALETAS DE COLORES (Elige del 1 al 10)
+    paletaElegida: 2, 
+    paletas: {
+        1: { bg1:'#FFFFFF', bg2:'#F7F3EF', accent:'#C9A98C', title:'#2E2822', text:'#8C7B6E' }, // Arena Soft
+        2: { bg1:'#FDF8F8', bg2:'#E8D5D5', accent:'#A67C7C', title:'#4A3B3B', text:'#635151' }, // Rosa Vintage (Más contraste)
+        3: { bg1:'#FFFFFF', bg2:'#E3E9E1', accent:'#6B7C69', title:'#2A3328', text:'#4A5448' }, // Bosque/Olivo
+        4: { bg1:'#1A1A1A', bg2:'#2D2D2D', accent:'#D4AF37', title:'#FFFFFF', text:'#CCCCCC' }, // Gala (Oscuro)
+        5: { bg1:'#F0F4F7', bg2:'#D1DAE3', accent:'#4A6FA5', title:'#1A253A', text:'#45566E' }, // Azul Sereno
+        6: { bg1:'#FFFFFF', bg2:'#F0EDE9', accent:'#111111', title:'#000000', text:'#555555' }, // Minimal B&W
+        7: { bg1:'#FAF9F6', bg2:'#E9E4D9', accent:'#8E735B', title:'#433932', text:'#6B6158' }, // Papel Pergamino
+        8: { bg1:'#FDFCF0', bg2:'#F2E8C4', accent:'#B59410', title:'#3D340B', text:'#70642F' }, // Champagne
+        9: { bg1:'#F9F7F5', bg2:'#DED0C1', accent:'#7A5C41', title:'#3E2F22', text:'#5C4E42' }, // Terracota
+        10:{ bg1:'#FFFFFF', bg2:'#FFEEEE', accent:'#E94E77', title:'#333333', text:'#666666' }  // Romántico Moderno
+    },
+
+    // 2. ESTILOS GENERALES
+    estilos: {
+        tituloSize: "3.5rem",
+        lineHeightTitulo: "1.1", // <--- Edita el interlineado de los títulos aquí
+        textoSize: "1.1rem",
+        espaciadoSecciones: "7rem", // Espacio entre secciones
+        fuenteCombo: "A", // A: Serif Elegante | B: Moderno Serif | C: Sans Minimal
+    },
+
+    // 3. DATOS BANCARIOS (Se muestran al tocar el botón de regalos)
+    regalosInfo: {
+        titulo: "Banco Santander",
+        cuenta: "Cuenta Corriente: 123456789",
+        titular: "Nombre: Sofía García",
+        ci: "C.I.: 1.234.567-8",
+        extra: "¡Muchas gracias por tu detalle!"
+    },
+
+    // 4. SECCIONES
+    secciones: [
+        {
+            id: 'historia',
+            icono: 'heart',
+            titulo: 'Nuestra <em>Historia</em>',
+            texto: 'En un mundo lleno de coincidencias, encontrarnos fue nuestro momento favorito. Hoy decidimos caminar juntos por siempre.',
+            boton: null
+        },
+        {
+            id: 'cuenta-regresiva',
+            icono: 'calendar',
+            titulo: 'Falta <em>Muy</em> Poco',
+            texto: 'Estamos contando los segundos para compartir este día contigo:',
+            htmlAdicional: `
+                <div class="countdown-grid">
+                    <div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div>
+                    <div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Horas</span></div>
+                    <div class="cd-item"><span class="cd-num" id="mins">00</span><span class="cd-lab">Mins</span></div>
+                    <div class="cd-item"><span class="cd-num" id="secs">00</span><span class="cd-lab">Segs</span></div>
+                </div>`
+        },
+        {
+            id: 'ubicacion',
+            icono: 'map',
+            titulo: 'Dónde <em>&</em> Cuándo',
+            texto: '<strong>Ceremonia:</strong> Iglesia San José, 18:00 hs.<br><strong>Fiesta:</strong> Quinta Las Lilas, 21:00 hs.',
+            boton: { texto: 'Ver Mapa', link: 'https://google.com/maps', rsvp: false }
+        },
+        {
+            id: 'galeria',
+            icono: 'camera',
+            titulo: 'Nuestros <em>Momentos</em>',
+            texto: 'Toca las fotos para verlas en grande.',
+            htmlAdicional: `
+                <div class="gallery-grid">
+                    <div class="gallery-item g-large" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800" alt="Foto"></div>
+                    <div class="gallery-item g-large" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800" alt="Foto"></div>
+                    <div class="gallery-item g-small" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1522673607200-1648832cee98?auto=format&fit=crop&w=400" alt="Foto"></div>
+                    <div class="gallery-item g-small" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=400" alt="Foto"></div>
+                    <div class="gallery-item g-small" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1465495910483-0d6749ee9f4a?auto=format&fit=crop&w=400" alt="Foto"></div>
+                </div>`
+        },
+        {
+            id: 'regalos',
+            icono: 'gift',
+            titulo: 'Mesa de <em>Regalos</em>',
+            texto: 'Tu presencia es nuestro mayor regalo. Si deseas realizarnos un presente, aquí tienes los datos.',
+            boton: { texto: 'Ver CBU / Datos Bancarios', link: 'javascript:openGiftModal()', rsvp: false }
+        }
+    ],
+
+    // 5. DATOS GLOBALES
+    global: {
+        nombres: "Sofía & Martín",
+        frasePortada: "¡Nos Casamos!",
+        fechaPortada: "20 de Diciembre de 2026",
+        fechaCuentaRegresiva: new Date(2026, 11, 20, 18, 0),
+        fotoPortada: "https://images.unsplash.com/photo-1519225495810-758eb31e7a72?auto=format&fit=crop&w=1920",
+        ornamentoFinal: true // Mostrar flor final
+    }
+};
+
+/* ════════════════════════════════════════
+   MOTOR DE RENDERIZADO
+═════════════════════════════════════════= */
+
+const ICONOS = {
+    heart: `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="currentColor"/></svg>`,
+    calendar: `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+    map: `<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    gift: `<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14"/><path d="M2 7h20L12 2 2 7z"/><line x1="12" y1="22" x2="12" y2="7"/></svg>`,
+    camera: `<svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`
+};
+
+const pal = CONFIG.paletas[CONFIG.paletaElegida];
+const r = document.documentElement.style;
+r.setProperty('--bg-1', pal.bg1);
+r.setProperty('--bg-2', pal.bg2);
+r.setProperty('--accent', pal.accent);
+r.setProperty('--title-color', pal.title);
+r.setProperty('--text-color', pal.text);
+r.setProperty('--title-size', CONFIG.estilos.tituloSize);
+r.setProperty('--title-lh', CONFIG.estilos.lineHeightTitulo);
+r.setProperty('--text-size', CONFIG.estilos.textoSize);
+r.setProperty('--section-spacing', CONFIG.estilos.espaciadoSecciones);
+
+const fConfig = {
+    A: { serif:'Cormorant Garamond', sans:'Jost', gf:'Cormorant+Garamond:ital,wght@0,300;1,300&family=Jost:wght@300;400' },
+    B: { serif:'Playfair Display', sans:'Lato', gf:'Playfair+Display:ital,wght@0,400;1,400&family=Lato:wght@300;400' },
+    C: { serif:'Montserrat', sans:'Montserrat', gf:'Montserrat:wght@300;400;600' }
+};
+const selF = fConfig[CONFIG.estilos.fuenteCombo];
+document.getElementById('font-link').href = `https://fonts.googleapis.com/css2?family=${selF.gf}&display=swap`;
+r.setProperty('--title-font', `'${selF.serif}', serif`);
+r.setProperty('--body-font', `'${selF.sans}', sans-serif`);
+
+document.getElementById('t-eyebrow').textContent = CONFIG.global.frasePortada;
+document.getElementById('t-names').innerHTML = CONFIG.global.nombres.replace('&', '<em>&</em>');
+document.getElementById('t-cover-date').textContent = CONFIG.global.fechaPortada;
+document.getElementById('cover-bg').style.backgroundImage = `url('${CONFIG.global.fotoPortada}')`;
+
+const main = document.getElementById('main-content');
+CONFIG.secciones.forEach(s => {
+    const section = document.createElement('section');
+    section.className = 'section-wrapper';
+    section.id = s.id;
+    let iconoHTML = `<div class="icon-wrapper">${ICONOS[s.icono]}</div>`;
+    let botonHTML = s.boton ? `<a href="${s.boton.link}" class="btn">${s.boton.texto}</a>` : '';
+    
+    section.innerHTML = `<div class="container">${iconoHTML}<h2>${s.titulo}</h2><p>${s.texto}</p>${s.htmlAdicional || ''}${botonHTML}</div>`;
+    main.appendChild(section);
+});
+
+if(CONFIG.global.ornamentoFinal) {
+    const or = document.createElement('div');
+    or.className = 'ornament';
+    or.innerHTML = `<svg viewBox="0 0 100 20" fill="none" stroke="currentColor"><path d="M0 10 Q25 0 50 10 T100 10" stroke-width="0.5"/><circle cx="50" cy="10" r="2"/></svg>`;
+    main.appendChild(or);
+}
+
+// Funciones de Lógica
+function openGiftModal() {
+    const info = CONFIG.regalosInfo;
+    document.getElementById('bank-details').innerHTML = `
+        <p><strong>${info.titulo}</strong></p>
+        <p>${info.cuenta}</p>
+        <p>${info.titular}</p>
+        <p>${info.ci}</p>
+        <p style="margin-top:1rem; opacity:0.7"><em>${info.extra}</em></p>
+    `;
+    document.getElementById('gift-modal').style.display = 'flex';
+}
+function closeGiftModal() { document.getElementById('gift-modal').style.display = 'none'; }
+
+function openLightbox(el) {
+    const lb = document.getElementById('lightbox');
+    lb.querySelector('img').src = el.querySelector('img').src;
+    lb.style.display = 'flex';
+}
+
+function updateCountdown() {
+    const t = CONFIG.global.fechaCuentaRegresiva - new Date();
+    if (t < 0) return;
+    document.getElementById('days').innerText = Math.floor(t / (1000*60*60*24));
+    document.getElementById('hours').innerText = Math.floor((t / (1000*60*60)) % 24);
+    document.getElementById('mins').innerText = Math.floor((t / 1000 / 60) % 60);
+    document.getElementById('secs').innerText = Math.floor((t / 1000) % 60);
+}
+setInterval(updateCountdown, 1000);
+
+const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.section-wrapper').forEach(sw => obs.observe(sw));
+</script>
+</body>
+</html>
