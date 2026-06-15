@@ -80,7 +80,8 @@ h2 {
     padding: 1rem 2.2rem; 
     margin: 10px;
     /* Usamos el color de acento de la paleta como fondo principal */
-    background: linear-gradient(180deg, var(--accent) 0%, var(--accent) 100%);
+    /* Busca esta línea dentro de .btn y cámbiala por esta: */
+background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, var(--accent) 100%);
     /* El texto ahora es blanco para que resalte sobre el color */
     color: #FFFFFF !important; 
     border: none; 
@@ -197,8 +198,8 @@ const CONFIG = {
     },
     // MAPAS: Usamos enlaces de búsqueda directa para evitar errores de Firebase
     eventos: {
-        ceremonia: { t: "Ceremonia", f: "20 de Dic", h: "18:00 Hs", l: "Parque Rodó", d: "Montevideo, Uruguay", m: "https://www.google.com/maps/search/?api=1&query=Parque+Rodo+Montevideo" },
-        fiesta: { t: "Fiesta", f: "20 de Dic", h: "21:00 Hs", l: "Parque Rodó", d: "Montevideo, Uruguay", m: "https://www.google.com/maps/search/?api=1&query=Parque+Rodo+Montevideo" }
+        ceremonia: { t: "Ceremonia", f: "20 de Dic", h: "18:00 Hs", l: "Iglesia San Francisco de Asis", d: "Cmno Torres 2123, Montevideo, Uruguay", m: "https://www.google.com/maps/search/?api=1&query=Parque+Rodo+Montevideo" },
+        fiesta: { t: "Fiesta", f: "20 de Dic", h: "21:00 Hs", l: "Salón Aurora Palace, Avda Las Flores 2121 Parque Rodó", d: "Montevideo, Uruguay", m: "https://www.google.com/maps/search/?api=1&query=Parque+Rodo+Montevideo" }
     },
     regalos: {
         texto: "El mejor regalo es tu presencia, pero si deseas colaborar con nuestros sueños:",
