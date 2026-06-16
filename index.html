@@ -246,6 +246,14 @@ eventos: {
         d: "Avda Las Palmas 1212, Montevideo",
         m: "https://www.google.com/maps"
     }
+  regalos: {
+    textoSeccion: "El mejor regalo es que estés presente, pero si deseas colaborar con nuestros sueños, tienes la info aquí:",
+    textoModal: "",
+    titular: "Sofía y Martín",
+    banco: "Santander",
+    cuenta: "1234567890",
+    ci: "1.234.567-8"
+
 },
     cierre: { t: "¡Te esperamos!", s: "Tu presencia es muy importante para nosotros." },
     fotos: ["foto1.jpg", "foto2.jpg", "foto3.jpg", "foto4.jpg", "foto5.jpg", "foto6.jpg", "foto7.jpg", "foto8.jpg", "foto9.jpg", "foto10.jpg"]
@@ -399,6 +407,7 @@ if (CONFIG.eventos.fiesta.mostrar) {
     </div>`;
 }
   createSec('ubicacion', 'map', 'Dónde & Cuándo', ubicacionHTML);
+  let g = `<div class="gallery-grid">`;
 CONFIG.fotos.forEach(f => g += `<div class="gallery-item" onclick="openLightbox('${f}')"><img src="${f}"></div>`);
 createSec('galeria', 'camera', 'Momentos', g + `</div>`);
 createSec('rsvp', 'rings', 'Confirmación', `<p>Por favor, confirma tu asistencia antes del 10 de diciembre.</p><a href="https://wa.me/59899000000" target="_blank" class="btn">Confirmar WhatsApp</a>`);
