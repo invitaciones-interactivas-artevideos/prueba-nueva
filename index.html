@@ -220,6 +220,8 @@ diseno: {
    tamañoTexto: "1rem",
    espacioTituloATexto: 30,
    espacioTextoABoton: 40
+  textos: {
+    historia: "En un mundo lleno de coincidencias, encontrarnos fue nuestro momento favorito."
 },
 
 eventos: {
@@ -356,7 +358,7 @@ function createSec(id, icon, title, body) {
 }
 
 // Renderizado de secciones
-createSec('historia', 'heart', 'Nuestra Historia', '<p>En un mundo lleno de coincidencias, encontrarnos fue nuestro momento favorito.</p>');
+createSec('historia', 'heart', 'Nuestra Historia', `<p>${CONFIG.textos.historia}</p>`);
 createSec('cuenta', 'calendar', 'Falta Poco', `<div class="countdown-grid"><div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div><div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Horas</span></div><div class="cd-item"><span class="cd-num" id="minutos">00</span><span class="cd-lab">Minutos</span></div><div class="cd-item"><span class="cd-num" id="secs">00</span><span class="cd-lab">Segundos</span></div></div>`);
 createSec('ubicacion', 'map', 'Dónde & Cuándo', `<div><h3>${CONFIG.eventos.ceremonia.t}</h3><p>${CONFIG.eventos.ceremonia.f} - ${CONFIG.eventos.ceremonia.h}<br>${CONFIG.eventos.ceremonia.l}<br>${CONFIG.eventos.ceremonia.d}</p><a href="${CONFIG.eventos.ceremonia.m}" target="_blank" class="btn">Ver Mapa</a></div><div style="margin-top:3rem"><h3>${CONFIG.eventos.fiesta.t}</h3><p>${CONFIG.eventos.fiesta.f} - ${CONFIG.eventos.fiesta.h}<br>${CONFIG.eventos.fiesta.l}<br>${CONFIG.eventos.fiesta.d}</p><a href="${CONFIG.eventos.fiesta.m}" target="_blank" class="btn">Ver Mapa</a></div>`);
 let g = `<div class="gallery-grid">`;
