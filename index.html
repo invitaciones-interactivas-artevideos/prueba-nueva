@@ -371,8 +371,34 @@ function createSec(id, icon, title, body) {
 // Renderizado de secciones
 createSec('historia', 'heart', CONFIG.textos.tituloHistoria, `<p>${CONFIG.textos.historia}</p>`);
 createSec('cuenta', 'calendar', 'Falta Poco', `<div class="countdown-grid"><div class="cd-item"><span class="cd-num" id="days">00</span><span class="cd-lab">Días</span></div><div class="cd-item"><span class="cd-num" id="hours">00</span><span class="cd-lab">Horas</span></div><div class="cd-item"><span class="cd-num" id="mins">00</span><span class="cd-lab">Minutos</span></div><div class="cd-item"><span class="cd-num" id="secs">00</span><span class="cd-lab">Segundos</span></div></div>`);
-createSec('ubicacion', 'map', 'Dónde & Cuándo', `<div><h3>${CONFIG.eventos.ceremonia.t}</h3><p>${CONFIG.eventos.ceremonia.f} - ${CONFIG.eventos.ceremonia.h}<br>${CONFIG.eventos.ceremonia.l}<br>${CONFIG.eventos.ceremonia.d}</p><a href="${CONFIG.eventos.ceremonia.m}" target="_blank" class="btn">Ver Mapa</a></div><div style="margin-top:3rem"><h3>${CONFIG.eventos.fiesta.t}</h3><p>${CONFIG.eventos.fiesta.f} - ${CONFIG.eventos.fiesta.h}<br>${CONFIG.eventos.fiesta.l}<br>${CONFIG.eventos.fiesta.d}</p><a href="${CONFIG.eventos.fiesta.m}" target="_blank" class="btn">Ver Mapa</a></div>`);
-let g = `<div class="gallery-grid">`;
+let ubicacionHTML = "";
+
+if (CONFIG.eventos.ceremonia.mostrar) {
+    ubicacionHTML += `
+    <div>
+        <h3>${CONFIG.eventos.ceremonia.t}</h3>
+        <p>
+            ${CONFIG.eventos.ceremonia.f} - ${CONFIG.eventos.ceremonia.h}<br>
+            ${CONFIG.eventos.ceremonia.l}<br>
+            ${CONFIG.eventos.ceremonia.d}
+        </p>
+        <a href="${CONFIG.eventos.ceremonia.m}" target="_blank" class="btn">Ver Mapa</a>
+    </div>`;
+}
+
+if (CONFIG.eventos.fiesta.mostrar) {
+    ubicacionHTML += `
+    <div style="margin-top:3rem">
+        <h3>${CONFIG.eventos.fiesta.t}</h3>
+        <p>
+            ${CONFIG.eventos.fiesta.f} - ${CONFIG.eventos.fiesta.h}<br>
+            ${CONFIG.eventos.fiesta.l}<br>
+            ${CONFIG.eventos.fiesta.d}
+        </p>
+        <a href="${CONFIG.eventos.fiesta.m}" target="_blank" class="btn">Ver Mapa</a>
+    </div>`;
+}
+  createSec('ubicacion', 'map', 'Dónde & Cuándo', ubicacionHTML);
 CONFIG.fotos.forEach(f => g += `<div class="gallery-item" onclick="openLightbox('${f}')"><img src="${f}"></div>`);
 createSec('galeria', 'camera', 'Momentos', g + `</div>`);
 createSec('rsvp', 'rings', 'Confirmación', `<p>Por favor, confirma tu asistencia antes del 10 de diciembre.</p><a href="https://wa.me/59899000000" target="_blank" class="btn">Confirmar WhatsApp</a>`);
